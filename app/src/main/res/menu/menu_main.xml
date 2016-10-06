@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="org.projects.shoppinglist.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_add_test_products"
+        android:orderInCategory="200"
+        android:title="DEGUB: Add test products"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_all_seen"
+        android:orderInCategory="300"
+        android:title="DEGUB: Mark all as seen"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_all_unseen"
+        android:orderInCategory="400"
+        android:title="DEGUB: Mark all as unseen"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_clear_all"
+        android:orderInCategory="500"
+        android:title="DEGUB: Clear all"
+        app:showAsAction="never" />
+</menu>
