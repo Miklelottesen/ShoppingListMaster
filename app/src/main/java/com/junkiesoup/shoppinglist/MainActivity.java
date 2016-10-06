@@ -2,15 +2,19 @@ package com.junkiesoup.shoppinglist;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,26 +23,34 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ConfirmDeleteDialogFragment.OnPositiveListener {
+    // For the dialog
+    static ConfirmDeleteDialogFragment dialog;
+    public Context context;
+
     public static Resources resources; // Declare resources object, to be used when accessing string resources in other classes
     public int productToEdit; // For deleting through context menu - will store the bag position of the item to delete
 
     // Declare adapter, listView, bag and df (the "delete checked" FAB)
-    ProductInfoAdapter adapter;
-    ListView listView;
-    ArrayList<Product> bag = new ArrayList<Product>();
+    public ProductInfoAdapter adapter;
+    public ListView listView;
+    static ArrayList<Product> bag = new ArrayList<>();
+    static ArrayList<Product> backupBag = new ArrayList<>();
     FloatingActionButton df;
 
     int currentUser = 1; // TEST: sets ID for current user
@@ -145,23 +157,27 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view){
                     // Create a new temporary ArrayList, store (only) unchecked products in it, clear the old bag and add the temp list to it
-                    ArrayList<Product> n = new ArrayList<Product>();
+                    ArrayList<Product> n = new ArrayList<>();
+                    backupBag.clear();
                     for (Product p : bag) {
                         if(!p.isChecked()){
                             n.add(p);
+                        } else {
+                            backupBag.add(p);
                         }
                     }
                     bag.clear();
                     adapter.notifyDataSetChanged();
                     bag.addAll(n);
                     itemSubmission(adapter);
+                    makeSnackbar(5000);
 
                 }
 
             });
 
         // Hide the "delete" FAB (will be shown automatically if there are checked items)
-        df.setVisibility(View.GONE);
+        //df.setVisibility(View.GONE);
 
         // Determine visibility of the message that appears in empty list (also called on every itemSubmission())
         emptyListMessage();
@@ -220,8 +236,9 @@ public class MainActivity extends AppCompatActivity {
         // Determine whether or not to show the FAB for deleting products
         boolean display = false;
         for (Product prod : bag) {
-            display = (prod.isChecked()) ? true : display;
+            display = (prod.isChecked()) || display;
         }
+        Log.d("testDisplay",display+"");
         if(display){
             df.setVisibility(View.VISIBLE);
         } else {
@@ -288,6 +305,81 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Dialogs:
+     */
+    public void showDialog(View v) {
+        //showing our dialog.
+
+        dialog = new ConfirmDialog();
+        //Here we show the dialog
+        //The tag "MyFragement" is not important for us.
+        dialog.show(getFragmentManager(), "MyFragment");
+    }
+
+    public static class ConfirmDialog extends ConfirmDeleteDialogFragment {
+        @Override
+        protected void negativeClick() {
+            // Nothing to see here
+        }
+    }
+
+    @Override
+    public void onPositiveClicked() {
+        Log.d("Dialog","Positive clicked");
+        backupBag.clear();
+        backupBag.addAll(bag);
+        adapter.clear();
+        bag.clear();
+        itemSubmission(adapter);
+        makeSnackbar(6000);
+    }
+
+    /**
+     * Snackbar:
+     */
+    // Snackbar that appears every time something
+    // has been deleted, with option to undo
+    public void makeSnackbar(int duration){
+        // All delete actions (pick item/items to delete, clear backupBag,
+        // add to backupBag, delete item/items) must be performed BEFORE
+        // calling this function!
+
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+        int delCount = backupBag.size(); // Number of deleted items
+        String m = delCount+" "+((delCount == 1) // Make string with delCount and string values
+                ? getString(R.string.snackbar_text_single)
+                : getString(R.string.snackbar_text_plural));
+
+        Snackbar snackbar = Snackbar
+                .make(findViewById(R.id.mainLayout), m, duration)
+                .setAction(getString(R.string.snackbar_undo), new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        bag.addAll(backupBag);
+                        backupBag.clear();
+                        itemSubmission(adapter);
+                        Log.d("Snackbar","Snackbar came!");
+                        findViewById(R.id.fabDelete).setVisibility(View.GONE); // Hide the 'delete' FAB while snackbar is visible
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.mainLayout), getString(R.string.snackbar_restored), Snackbar.LENGTH_SHORT)
+                                .setCallback(new Snackbar.Callback() {
+                                    @Override
+                                    public void onDismissed(Snackbar snackbar, int event) {
+                                        super.onDismissed(snackbar, event);
+                                        Log.d("Snackbar","Snackbar gone...");
+                                        itemSubmission(adapter);
+                                    }
+                                });
+                        snackbar.show();
+                    }
+                });
+        snackbar.show();
+    }
+
+    /**
      * Menus:
      */
 
@@ -348,9 +440,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Options->Clear all
         if (id == R.id.action_clear_all) {
-            adapter.clear();
-            bag.clear();
-            itemSubmission(adapter);
+            showDialog(findViewById(R.id.mainLayout));
             return true;
         }
 
@@ -368,9 +458,11 @@ public class MainActivity extends AppCompatActivity {
 
             // Context menu->Delete
             case R.id.product_action_delete:
-                //adapter.remove(bag.get(productToEdit));
+                backupBag.clear();
+                backupBag.add(bag.get(productToEdit));
                 bag.remove(productToEdit);
                 itemSubmission(adapter);
+                makeSnackbar(3000);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -383,6 +475,7 @@ public class MainActivity extends AppCompatActivity {
     public TimerTask updateProducts = new TimerTask() {
         @Override
         public void run() {
+            // Timer that will update the displayed date on the product cards every 15 secs
             runOnUiThread(new Runnable() { // Required to alter views
                 @Override
                 public void run() {

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Huskeseddel</string>
     <string name="action_settings">Indstillinger</string>
-    <string name="itemInputHint">Tilføj til liste...</string>
-    <string name="emptyList">Din liste vil blive vist her...</string>
+    <string name="itemInputHint">Tilføj element&#8230;</string>
+    <string name="emptyList">Din liste vil blive vist her&#8230;</string>
     <string name="product_action_delete">Slet</string>
     <string name="product_action_edit">Rediger</string>
 
@@ -23,8 +23,21 @@
     <string name="cancel">Anuller</string>
     <string name="save">Gem</string>
 
-    <string name="edit_product_heading">Rediger produkt</string>
-    <string name="edit_product_hint">Angiv nyt produktnavn...</string>
+    <string name="edit_product_heading">Rediger element</string>
+    <string name="edit_product_hint">Angiv nyt navn&#8230;</string>
+
+    <string name="diag_delete_confirm_title">Bekræftelse</string>
+    <string name="diag_delete_confirm_text">Dette vil slette alt på listen. Fortsæt?</string>
+    <string name="diag_delete_confirm_yes">Ja</string>
+    <string name="diag_delete_confirm_no">Annuller</string>
+
+    <string name="snackbar_text_single">element slettet</string>
+    <string name="snackbar_text_plural">elementer slettet</string>
+    <string name="snackbar_undo">Fortryd</string>
+    <string name="snackbar_restored">Slettede elementer gendannet&#8230;</string>
+
+    <!-- String related to accessability: -->
+    <string name="access_add_item">Tilføj</string>
 
     <!-- Strings related to Settings -->
 

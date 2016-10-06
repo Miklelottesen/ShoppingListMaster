@@ -1,5 +1,8 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- First two values changed from 16dp to zero, to allow the "unseen"
+    drawable (small red dot) to appear at the edge - for all other elements,
+    this is compensated for using the general_margin value, set to 16dp, in
+    compliance with the Android design guidelines -->
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="general_margin">16dp</dimen>

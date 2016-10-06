@@ -42,13 +42,15 @@
                 android:background="#00ffffff"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"/>
+                android:layout_weight="0.1"
+                android:contentDescription="@string/access_add_item"/>
         </LinearLayout>
         <TextView
             android:id="@+id/emptyList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/general_margin"
+            android:layout_marginStart="@dimen/general_margin"
             android:layout_marginTop="@dimen/general_margin"
             android:text="@string/emptyList"/>
 
@@ -58,14 +60,4 @@
             android:layout_height="wrap_content"></ListView>
 
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_delete_white_24dp"
-        app:backgroundTint="#f24d4d"
-        app:layout_anchor="@id/mainLayout"
-        app:layout_anchorGravity="bottom|right|end"/>
 </LinearLayout>
