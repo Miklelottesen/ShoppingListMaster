@@ -25,6 +25,7 @@ public class Product implements Parcelable {
     private String date;
     private boolean checked;
     private boolean seen;
+    public int position;
 
 
     public Product(){}

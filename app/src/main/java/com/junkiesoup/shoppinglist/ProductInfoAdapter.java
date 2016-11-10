@@ -1,6 +1,7 @@
 package com.junkiesoup.shoppinglist;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class ProductInfoAdapter extends ArrayAdapter<Product> {
             productSeen.setVisibility(View.VISIBLE);
 
         }
+
         return convertView;
     }
 }

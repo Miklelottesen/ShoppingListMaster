@@ -7,10 +7,13 @@
     android:paddingTop="@dimen/product_card_padding"
     android:paddingLeft="0dp"
     android:paddingRight="@dimen/product_card_padding"
-    android:paddingBottom="0dp">
+    android:paddingBottom="0dp"
+    android:layoutAnimation="@anim/card_animation"
+    android:animateLayoutChanges="true">
 
 
     <LinearLayout
+        android:id="@+id/view_mode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

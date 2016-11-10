@@ -22,6 +22,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -53,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
     static ArrayList<Product> backupBag = new ArrayList<>();
     FloatingActionButton df;
 
+    // Boolean to momentarily disable the timer
+    public boolean timerUpdateEnabled = true;
+
     int currentUser = 1; // TEST: sets ID for current user
 
     //AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -62,6 +68,12 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
     {
         return adapter;
     }
+
+    ArrayList<Product> postDeleteList;
+
+    // Animation
+    Animation animFadeOut;
+    Animation animFadeOutDelete;
 
     /**
      * onCreate begin:
@@ -74,11 +86,51 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
         }
         setContentView(R.layout.activity_main);
 
+        postDeleteList = new ArrayList<>();
 
         //builder.setView(findViewById(R.id.edit_product_view));
 
         // Get resources for use in other classes
         resources = getResources();
+
+        // Load animations
+        //LayoutAnimationController layoutAnimation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), R.anim.card_out)
+        animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out);
+        animFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                itemSubmission(adapter);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        animFadeOutDelete = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_delete);
+        animFadeOutDelete.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+                //itemSubmission(adapter);
+                continueDeletion();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
         // Toolbar stuff
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
         // Hide the listview per default (will automatically be shown if it contains items)
         findViewById(R.id.list).setVisibility(View.GONE);
 
-        // Run the task updateProducts every 30 secs (the task updates the display dates on the cards)
+        // Run the method updateProducts every 30 secs (updates the display dates on the cards)
         new Timer().scheduleAtFixedRate(updateProducts, 10, 30000);
 
         // Remove initial focus from text input
@@ -124,16 +176,28 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
                 {
                     @Override
                     public void onItemClick(AdapterView<?> l, View view, int position, long id) {
+                        view.startAnimation(animFadeOut);
                         // Get listitem in question, set it to "checked" and submit to the adapter
                         Product i = bag.get(position);
                         i.setChecked();
-                        itemSubmission(adapter);
+                        // itemsubmissionadapter
+                    }
+                }
+        );
+
+        listView.setOnTouchListener(
+                new OnSwipeTouchListener(MainActivity.this){
+                    public void onSwipeRight() {
+                        Toast.makeText(MainActivity.this, "right", Toast.LENGTH_SHORT).show();
+                    }
+                    public void onSwipeLeft() {
+                        Toast.makeText(MainActivity.this, "left", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
 
         // Register the list view for longclick context menu
-        registerForContextMenu(listView);
+        //registerForContextMenu(listView);
 
         // Additional override of onItemLongClick, so the position will be stored in the productToEdit var
         // (otherwise the context menu wouldn't know which item to alter)
@@ -142,7 +206,10 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
                 {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> l, View view, int position, long id) {
+                        /*editMode = true;
                         productToEdit = position;
+                        view.findViewById(R.id.edit_mode).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.view_mode).setVisibility(View.GONE);*/
                         return false;
                     }
                 }
@@ -166,11 +233,16 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
                             backupBag.add(p);
                         }
                     }
+                    postDeleteList.clear();
+                    postDeleteList.addAll(n);
+                    continueDeletion();
+                    /*
                     bag.clear();
                     adapter.notifyDataSetChanged();
                     bag.addAll(n);
                     itemSubmission(adapter);
                     makeSnackbar(5000);
+                    */
 
                 }
 
@@ -198,19 +270,27 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
     } /** onCreate end */
 
     /**
-     * Functions:
+     * Methods:
      */
+
+    public void continueDeletion(){
+        bag.clear();
+        adapter.notifyDataSetChanged();
+        bag.addAll(postDeleteList);
+        itemSubmission(adapter);
+        makeSnackbar(5000);
+    }
 
     // TEST: Add a bunch of test items to the bag (call this function in onCreate, AFTER initializing bag and adapter)
     public void addTestItems(){
-        bag.add(new Product("Milk",new Date(2001-1900,9-1,11,14,10)));
-        bag.add(new Product("Vinegar",new Date(2015-1900,9-1,11,14,10)));
-        bag.add(new Product("Brine",new Date(2015-1900,11-1,11,14,10)));
-        bag.add(new Product("Sulphuric Acid",new Date(2016-1900,3-1,11,14,10)));
-        bag.add(new Product("Molotovs",new Date(2016-1900,8-1,11,14,10)));
-        bag.add(new Product("Starshine",new Date(2016-1900,9-1,11,14,10)));
-        bag.add(new Product("Flour",new Date(2016-1900,9-1,21,9,10)));
-        bag.add(new Product("Starch",new Date(2016-1900,9-1,21,15,10)));
+        bag.add(new Product("Køkkenrulle",new Date(2016-1900,9-1,17,14,10)));
+        bag.add(new Product("Fryseposer",new Date(2016-1900,9-1,17,14,11)));
+        bag.add(new Product("Afkalker",new Date(2015-1900,11-1,11,14,10)));
+        bag.add(new Product("Hørfrø",new Date(2016-1900,11-1,2,14,10)));
+        bag.add(new Product("Dadler",new Date(2016-1900,8-1,11,14,10)));
+        bag.add(new Product("4 appelsiner",new Date(2016-1900,9-1,11,14,10)));
+        bag.add(new Product("Sukker",new Date(2016-1900,9-1,21,9,10)));
+        bag.add(new Product("Mel",new Date(2016-1900,9-1,21,15,10)));
         bag.add(new Product("Pistols"));
         itemSubmission(adapter);
     }
@@ -479,9 +559,12 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
             runOnUiThread(new Runnable() { // Required to alter views
                 @Override
                 public void run() {
+                    if(!timerUpdateEnabled) {
+                        Log.d("Timer","Refresh prevented by app.");
+                        return;
+                    }
                     // Temporary arraylist
                     ArrayList<Product> tempBag = new ArrayList<Product>();
-
                     // Loop through each Product in bag, update the display date and add to tempBag
                     for (Product p : bag) {
                         p.updateDisplayDate();
@@ -523,4 +606,5 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
         adapter.notifyDataSetChanged();
         itemSubmission(adapter);
     }
+
 }
