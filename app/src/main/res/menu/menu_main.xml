@@ -25,6 +25,7 @@
     <item
         android:id="@+id/action_clear_all"
         android:orderInCategory="500"
-        android:title="DEGUB: Clear all"
+        android:icon="@drawable/delete"
+        android:title="Clear all"
         app:showAsAction="never" />
 </menu>

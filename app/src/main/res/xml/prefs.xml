@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:key="show_qty_field"
+        android:defaultValue="false"
+        android:summary="@string/settings_show_qty_field_summary"
+        android:title="@string/settings_show_qty_field_title" />
+
+    <EditTextPreference
+        android:key="name"
+        android:defaultValue="John"
+        android:summary="Enter your name"
+        android:title="Name" />
+
+</PreferenceScreen>

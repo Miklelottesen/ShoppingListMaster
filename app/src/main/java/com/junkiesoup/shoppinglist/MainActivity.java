@@ -42,7 +42,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements ConfirmDeleteDialogFragment.OnPositiveListener {
-    // For the dialog
+    // For the delete dialog
     static ConfirmDeleteDialogFragment dialog;
     public Context context;
 

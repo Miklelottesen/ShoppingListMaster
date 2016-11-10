@@ -40,6 +40,8 @@
     <string name="access_add_item">Tilføj</string>
 
     <!-- Strings related to Settings -->
+    <string name="settings_show_qty_field_title">Kvantitetsfelt</string>
+    <string name="settings_show_qty_field_summary">Giver mulighed for at angive kvantitet, når nye elementer tilføjes</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
