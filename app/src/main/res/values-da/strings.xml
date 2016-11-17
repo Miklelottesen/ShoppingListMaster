@@ -6,6 +6,9 @@
     <string name="product_action_delete">Slet</string>
     <string name="product_action_edit">Rediger</string>
 
+    <string name="navigation_drawer_open">Åbn</string>
+    <string name="navigation_drawer_close">Luk</string>
+
     <string name="date_not_found">(dato mangler)</string>
     <string name="date_year">år siden</string>
     <string name="date_month">måned siden</string>

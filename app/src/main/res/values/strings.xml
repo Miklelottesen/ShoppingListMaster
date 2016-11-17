@@ -6,6 +6,9 @@
     <string name="product_action_delete">Delete</string>
     <string name="product_action_edit">Edit</string>
 
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+
     <string name="date_not_found">(date missing)</string>
     <string name="date_year">year ago</string>
     <string name="date_month">month ago</string>

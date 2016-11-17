@@ -9,7 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -41,7 +45,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements ConfirmDeleteDialogFragment.OnPositiveListener {
+public class MainActivity extends AppCompatActivity implements ConfirmDeleteDialogFragment.OnPositiveListener, NavigationView.OnNavigationItemSelectedListener {
     // For the delete dialog
     static ConfirmDeleteDialogFragment dialog;
     public Context context;
@@ -92,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
 
         // Get resources for use in other classes
         resources = getResources();
+
+
 
         // Load animations
         //LayoutAnimationController layoutAnimation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), R.anim.card_out)
@@ -176,10 +182,13 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
                 {
                     @Override
                     public void onItemClick(AdapterView<?> l, View view, int position, long id) {
-                        view.startAnimation(animFadeOut);
+                        if(position+1 < bag.size()) {
+                            view.startAnimation(animFadeOut);
+                        }
                         // Get listitem in question, set it to "checked" and submit to the adapter
                         Product i = bag.get(position);
                         i.setChecked();
+                        if(position+1 >= bag.size()) itemSubmission(adapter);
                         // itemsubmissionadapter
                     }
                 }
@@ -247,6 +256,18 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
                 }
 
             });
+        // Drawer layout
+        Toolbar appToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(appToolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, appToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         // Hide the "delete" FAB (will be shown automatically if there are checked items)
         //df.setVisibility(View.GONE);
@@ -268,6 +289,31 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
             }
         });
     } /** onCreate end */
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
     /**
      * Methods:
@@ -584,7 +630,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
                             p.setSeen(true);
                         }
                     }
-                    adapter.notifyDataSetChanged();
+                    itemSubmission(adapter);
                 }
             });
         }
