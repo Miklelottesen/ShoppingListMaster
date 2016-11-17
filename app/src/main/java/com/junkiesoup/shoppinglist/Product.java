@@ -22,7 +22,7 @@ public class Product implements Parcelable {
     private int userID;
     private Date added;
     private Date modified;
-    private String date;
+    //private String date;
     private boolean checked;
     private boolean seen;
     public int position;
@@ -44,7 +44,7 @@ public class Product implements Parcelable {
         // Assign dates
         this.added = currentLocalTime;
         this.modified = this.added;
-        this.date = setDateDisplay(currentLocalTime);
+        //this.date = setDateDisplay(currentLocalTime);
     }
 
     // TEST ONLY: allows to set date
@@ -57,7 +57,7 @@ public class Product implements Parcelable {
         // Assign dates
         this.added = date;
         this.modified = this.added;
-        this.date = setDateDisplay(date);
+        //this.date = setDateDisplay(date);
     }
 
     // Parcelable implementation methods
@@ -68,7 +68,7 @@ public class Product implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeString(date);
+        //dest.writeString(date);
         dest.writeInt(userID);
         dest.writeSerializable(added);
         dest.writeSerializable(modified);
@@ -92,7 +92,7 @@ public class Product implements Parcelable {
     // "De-parcel object
     public Product(Parcel in) {
         name = in.readString();
-        date = in.readString();
+        //date = in.readString();
         userID = in.readInt();
         added = (Date) in.readSerializable();
         modified = (Date) in.readSerializable();
@@ -104,21 +104,19 @@ public class Product implements Parcelable {
      * Methods:
      */
 
-    public void updateDisplayDate(){
+    /*public void updateDisplayDate(){
         this.date = setDateDisplay(this.modified);
-    }
+    }*/
 
     // Return a string with date info (to display on the product cards)
-    private String setDateDisplay(Date d){
+    /*private String setDateDisplay(Date d){
         String returnString = MainActivity.resources.getString(R.string.date_not_found);
 
         // Get current date
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         Date clt = cal.getTime(); // Current local time
 
-        /**
-         * Compare Date d with current date
-         */
+
         // Set date formats for comparison
         DateFormat[] dateFormats = new DateFormat[5]; // Array to contain date formats, making looping available
         dateFormats[0] = new SimpleDateFormat("yyyy");
@@ -226,12 +224,12 @@ public class Product implements Parcelable {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         dateFormat.setTimeZone(TimeZone.getDefault());
         return returnString;
-    }
+    }*/
     public String getName(){
         return this.name;
     }
     public String getDate(){
-        return this.date;
+        return this.modified.toString();
     }
     public Date fetchDate() { return this.modified; }
     public int getAuthor(){
@@ -257,14 +255,14 @@ public class Product implements Parcelable {
     // TEST METHODS
     public String consoleLog(){
         return "Product added: "+this.name+"\n"+
-                "Added: "+this.date+"\n"+
+                "Added: "+this.modified.toString()+"\n"+
                 "User: "+this.userID+"\n"+
                 "Is checked: "+this.checked;
     }
     // Function for returning date values as int
-    public int di (DateFormat f, Date D){
+    /*public int di (DateFormat f, Date D){
         String s = f.format(D);
         int r = Integer.parseInt(s);
         return r;
-    }
+    }*/
 }

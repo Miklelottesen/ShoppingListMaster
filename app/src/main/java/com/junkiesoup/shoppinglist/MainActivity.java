@@ -564,7 +564,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
                         return;
                     }
                     // Temporary arraylist
-                    ArrayList<Product> tempBag = new ArrayList<Product>();
+                    /*ArrayList<Product> tempBag = new ArrayList<Product>();
                     // Loop through each Product in bag, update the display date and add to tempBag
                     for (Product p : bag) {
                         p.updateDisplayDate();
@@ -577,7 +577,14 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteDial
                     bag.clear();
                     adapter.notifyDataSetChanged();
                     bag.addAll(tempBag);
-                    itemSubmission(adapter);
+                    itemSubmission(adapter);*/
+
+                    for (Product p : bag) {
+                        if(!p.getSeen() && p.getAuthor() != currentUser) {
+                            p.setSeen(true);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
                 }
             });
         }
