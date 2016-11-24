@@ -6,6 +6,10 @@
     <string name="product_action_delete">Slet</string>
     <string name="product_action_edit">Rediger</string>
 
+    <string name="nav_drawer_mylists">Mine Lister</string>
+    <string name="nav_drawer_addlist">Tilføj Liste</string>
+    <string name="nav_drawer_settings">Indstillinger</string>
+
     <string name="navigation_drawer_open">Åbn</string>
     <string name="navigation_drawer_close">Luk</string>
 

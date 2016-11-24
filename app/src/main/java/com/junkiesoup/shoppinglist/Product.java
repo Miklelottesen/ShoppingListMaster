@@ -18,14 +18,14 @@ import java.util.TimeZone;
  * Created by Mikkel on 15-09-2016.
  */
 public class Product implements Parcelable {
-    private String name;
-    private int userID;
-    private Date added;
-    private Date modified;
-    //private String date;
-    private boolean checked;
-    private boolean seen;
-    public int position;
+    public String name;
+    public int author;
+    public Long added;
+    public Long date;
+    public boolean checked;
+    public boolean seen;
+    // For sorting
+    public Long checked_date;
 
 
     public Product(){}
@@ -33,7 +33,7 @@ public class Product implements Parcelable {
     // Constructor for before users are added - will assign userID 0
     public Product(String name){
         this.name = name;
-        this.userID = 1;
+        this.author = 1;
         this.checked = false;
         this.seen = false;
 
@@ -41,23 +41,23 @@ public class Product implements Parcelable {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         Date currentLocalTime = cal.getTime();
 
-        // Assign dates
-        this.added = currentLocalTime;
-        this.modified = this.added;
-        //this.date = setDateDisplay(currentLocalTime);
+        // Assign dates and identifier
+        this.added = currentLocalTime.getTime()*-1;
+        this.date = this.added;
+        this.checked_date = this.date - 1000000000;
     }
 
     // TEST ONLY: allows to set date
     public Product(String name, Date date){
         this.name = name;
-        this.userID = 2;
+        this.author = 2;
         this.checked = false;
         this.seen = false;
 
         // Assign dates
-        this.added = date;
-        this.modified = this.added;
-        //this.date = setDateDisplay(date);
+        this.added = date.getTime()*-1;
+        this.date = this.added;
+        this.checked_date = this.date - 1000000000;
     }
 
     // Parcelable implementation methods
@@ -69,9 +69,9 @@ public class Product implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         //dest.writeString(date);
-        dest.writeInt(userID);
+        dest.writeInt(author);
         dest.writeSerializable(added);
-        dest.writeSerializable(modified);
+        dest.writeSerializable(date);
         dest.writeInt(seen ? 1 : 0);
         dest.writeInt(checked ? 1 : 0);
         //if(seen) dest.writeInt(1); else dest.writeInt(0);
@@ -93,9 +93,9 @@ public class Product implements Parcelable {
     public Product(Parcel in) {
         name = in.readString();
         //date = in.readString();
-        userID = in.readInt();
-        added = (Date) in.readSerializable();
-        modified = (Date) in.readSerializable();
+        author = in.readInt();
+        added = (Long) in.readSerializable();
+        date = (Long) in.readSerializable();
         seen = (in.readInt()==1) ? true : false;
         checked = (in.readInt()==1) ? true : false;
     }
@@ -228,12 +228,10 @@ public class Product implements Parcelable {
     public String getName(){
         return this.name;
     }
-    public String getDate(){
-        return this.modified.toString();
-    }
-    public Date fetchDate() { return this.modified; }
+
+    public Long fetchDate() { return this.date; }
     public int getAuthor(){
-        return this.userID;
+        return this.author;
     }
     public boolean getSeen(){
         return this.seen;
@@ -244,8 +242,10 @@ public class Product implements Parcelable {
     public void setChecked(){
         if(this.checked) {
             this.checked = false;
+            this.checked_date = this.date - 1000000000;
         } else {
             this.checked = true;
+            this.checked_date = this.date + 1000000000;
         }
     }
     public void setSeen(boolean s){
@@ -255,8 +255,8 @@ public class Product implements Parcelable {
     // TEST METHODS
     public String consoleLog(){
         return "Product added: "+this.name+"\n"+
-                "Added: "+this.modified.toString()+"\n"+
-                "User: "+this.userID+"\n"+
+                "Added: "+this.date.toString()+"\n"+
+                "User: "+this.author+"\n"+
                 "Is checked: "+this.checked;
     }
     // Function for returning date values as int

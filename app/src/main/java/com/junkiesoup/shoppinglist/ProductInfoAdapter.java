@@ -62,7 +62,7 @@ public class ProductInfoAdapter extends ArrayAdapter<Product> {
         productName.setText(product.getName());
 
         TextView productDate = (TextView) convertView.findViewById(R.id.date);
-        productDate.setText(setDateDisplay(product.fetchDate()));
+        productDate.setText(setDateDisplay(new Date(product.fetchDate())));
 
         CheckBox productChecked = (CheckBox) convertView.findViewById(R.id.marked);
         if(product.isChecked()){
