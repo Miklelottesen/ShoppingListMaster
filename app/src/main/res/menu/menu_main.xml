@@ -28,4 +28,10 @@
         android:icon="@drawable/delete"
         android:title="Clear all"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sharelist"
+        android:orderInCategory="600"
+        android:icon="@drawable/ic_menu_share"
+        android:title="Share List"
+        app:showAsAction="always"/>
 </menu>

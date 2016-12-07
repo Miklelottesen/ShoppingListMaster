@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listCard"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/product_card_padding"
+    android:paddingLeft="@dimen/product_card_padding"
+    android:paddingRight="@dimen/product_card_padding"
+    android:paddingBottom="0dp"
+
+    android:animateLayoutChanges="true">
+
+
+    <LinearLayout
+        android:id="@+id/view_mode"
+        android:layout_width="0dp"
+        android:layout_weight="0.85"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/listName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Huskeseddel"
+            android:textSize="20dp"
+            android:textColor="@color/colorBlack"
+            />
+        <TextView
+            android:id="@+id/sharedWith"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delt med: Tabitha"/>
+
+
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/listEditBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:background="@color/tw__transparent"
+        android:src="@drawable/ic_edit"/>
+
+</LinearLayout>

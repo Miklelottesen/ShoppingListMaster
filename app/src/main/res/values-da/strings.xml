@@ -10,6 +10,8 @@
     <string name="nav_drawer_addlist">Tilføj Liste</string>
     <string name="nav_drawer_settings">Indstillinger</string>
 
+    <string name="lisman_name">Mine lister</string>
+
     <string name="navigation_drawer_open">Åbn</string>
     <string name="navigation_drawer_close">Luk</string>
 

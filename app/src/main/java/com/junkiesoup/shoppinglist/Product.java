@@ -19,7 +19,7 @@ import java.util.TimeZone;
  */
 public class Product implements Parcelable {
     public String name;
-    public int author;
+    public String author;
     public Long added;
     public Long date;
     public boolean checked;
@@ -31,9 +31,9 @@ public class Product implements Parcelable {
     public Product(){}
 
     // Constructor for before users are added - will assign userID 0
-    public Product(String name){
+    public Product(String name, String userName){
         this.name = name;
-        this.author = 1;
+        this.author = userName;
         this.checked = false;
         this.seen = false;
 
@@ -50,7 +50,7 @@ public class Product implements Parcelable {
     // TEST ONLY: allows to set date
     public Product(String name, Date date){
         this.name = name;
-        this.author = 2;
+        this.author = "Debug";
         this.checked = false;
         this.seen = false;
 
@@ -69,7 +69,7 @@ public class Product implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         //dest.writeString(date);
-        dest.writeInt(author);
+        dest.writeString(author);
         dest.writeSerializable(added);
         dest.writeSerializable(date);
         dest.writeInt(seen ? 1 : 0);
@@ -93,7 +93,7 @@ public class Product implements Parcelable {
     public Product(Parcel in) {
         name = in.readString();
         //date = in.readString();
-        author = in.readInt();
+        author = in.readString();
         added = (Long) in.readSerializable();
         date = (Long) in.readSerializable();
         seen = (in.readInt()==1) ? true : false;
@@ -230,7 +230,7 @@ public class Product implements Parcelable {
     }
 
     public Long fetchDate() { return this.date; }
-    public int getAuthor(){
+    public String getAuthor(){
         return this.author;
     }
     public boolean getSeen(){

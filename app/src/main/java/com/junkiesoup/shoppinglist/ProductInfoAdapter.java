@@ -48,11 +48,6 @@ public class ProductInfoAdapter extends ArrayAdapter<Product> {
         users.add(new User("Tabitha",2));
             // Set string to username
         String uName = "User not found";
-        for (User u : users) {
-            if(u.getId() == product.getAuthor()){
-                uName = u.getName();
-            }
-        }
         productAuthor.setText(uName);
 
         // Set context menu listener

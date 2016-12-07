@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainLayout"
+    android:id="@+id/listmanLayout2"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.junkiesoup.shoppinglist.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.junkiesoup.shoppinglist.ListmanActivity"
+    tools:showIn="@layout/listman_main">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,23 +28,16 @@
             android:layout_marginBottom="0dp">
 
             <EditText
-                android:id="@+id/itemInput"
+                android:id="@+id/listman_itemInput"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.9"
                 android:shadowColor="@color/colorPrimary"
-                android:hint="@string/itemInputHint"
+                android:hint="Create a new list"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences|textAutoCorrect"/>
-            <Spinner
-                android:id="@+id/annoyingmandatoryspinner"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:entries="@array/qty_arrays"
-                android:prompt="@string/qty_prompt"></Spinner>
             <ImageButton
-                android:id="@+id/addButton"
+                android:id="@+id/listmanAddButton"
                 android:src="@drawable/ic_add_item"
                 android:background="#00ffffff"
                 android:layout_width="0dp"
@@ -52,17 +45,10 @@
                 android:layout_weight="0.1"
                 android:contentDescription="@string/access_add_item"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/emptyList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/general_margin"
-            android:layout_marginStart="@dimen/general_margin"
-            android:layout_marginTop="@dimen/general_margin"
-            android:text="@string/emptyList"/>
+
 
         <ListView
-            android:id="@+id/list"
+            android:id="@+id/listman_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"></ListView>

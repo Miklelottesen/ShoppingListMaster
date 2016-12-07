@@ -1,4 +1,19 @@
 <resources>
+    <string name="qty_prompt">Qty</string>
+
+    <string-array name="qty_arrays">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
     <string name="app_name">Shopping List</string>
     <string name="action_settings">Settings</string>
     <string name="itemInputHint">Item to add&#8230;</string>
@@ -9,6 +24,8 @@
     <string name="nav_drawer_myLists">My Lists</string>
     <string name="nav_drawer_addList">Add List</string>
     <string name="nav_drawer_settings">Settings</string>
+
+    <string name="lisman_name">My lists</string>
 
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>

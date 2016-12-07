@@ -6,11 +6,4 @@
         android:defaultValue="false"
         android:summary="@string/settings_show_qty_field_summary"
         android:title="@string/settings_show_qty_field_title" />
-
-    <EditTextPreference
-        android:key="name"
-        android:defaultValue="John"
-        android:summary="Enter your name"
-        android:title="Name" />
-
 </PreferenceScreen>
